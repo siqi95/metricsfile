@@ -1,0 +1,108 @@
+@mock.patch("Graphite.app.v2.views.requests.get")
+    def test_tag_invalid_context(self, mock_request):
+        resp = requests.Response()
+        resp._content = json.dumps(["error", "123456"])
+        resp.status_code = 500
+        mock_request.return_value = resp
+        response = self.client.post(reverse('app:v2:tags'))
+        self.assertEqual(response.context['is_error'], True)
+        
+        
+        
+        
+@allow_for_team_impersonators
+@hg_login_required
+def tags_page(request):
+    profile = request.user.userprofile
+    uid = profile.uid
+    domain = settings.CLUSTER_URL
+    access_keys = profile.getAppIds()
+    for access_key in access_keys:
+        if access_key['type'].lower() == "graphite":
+            graphite_key = access_key['uuid']
+            break
+    composer_url = settings.COMPOSER_URL
+    limit = settings.DEFAULT_TAG_SEARCH_LIMIT
+    url = "https://{}/{}/{}/graphite/tags/?limit={}".format(domain, uid, \
+           graphite_key, limit)
+    response = requests.get(url)
+    taglist = []
+    is_error = False
+    if response.status_code != 200:
+        is_error = True
+
+     try:
+        taglist = response.json()
+    except Exception as e:
+        taglist = []
+        logging.error("Exception in taglist response was=%s", e)
+This conversation was marked as resolved by finnci
+
+     context = {
+        "tagnameA": taglist,
+        "listlength": len(taglist),
+        "domain": domain,
+        "uid": uid,
+        "graphite_key": graphite_key,
+        "composer_url": composer_url,
+        "is_error": is_error
+        }
+
+     return render(request, "v2/tags.html", context)
+     
+     
+     
+     
+default.yaml 
+COMPOSER_URL: "/grafana/dashboard/script/composer.js?showTarget="
+
+ TAGGING_UI_ENABLED: true
+
+ DEFAULT_TAG_SEARCH_LIMIT: 100
+ 
+ 
+ 
+ 
+ #searchbox{
+  position: relative;
+  bottom: 45px;
+  width: 60%;
+  border: 1px solid white;
+  overflow: auto;
+  display: none;
+}
+
+ #searchbutton{
+  display: none;
+}
+#box {
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+}
+
+ #lieb tr td {
+  padding: 4px;
+  padding-right: 1px;
+}
+
+ #lieb tr td input{
+  right: 30%;
+  width: 180%;
+  height: 25px;
+}
+
+ #more {display: none;}
+* {
+  padding: 0px;
+  margin: 0px;
+}
+
+ .tagnames{
+  width:100%;
+  margin:5px;
+  overflow: auto;
+}
+
+
+
