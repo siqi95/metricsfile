@@ -1,0 +1,24 @@
+% extends 'v2/base.html' %}
+{% load cloudfront_tag %}
+{% load cdnurl_shortterm %}
+
+ {% block title %}Tag Search - Hosted Graphite{% endblock title %}
+{% block metadescription %}Tag Search - Hosted Graphite{% endblock metadescription %}
+{% block subpage %}
+
+     {% include 'v2/cards/tags/tagstab-cards.html' %}
+    {% include 'v2/nav/top-bar.html' %}
+    {% include 'v2/nav/sidebar.html' %}
+
+ {% endblock subpage %}
+
+ {% block additionalscripts %}
+<script>
+    var domain = "{{domain}}";
+    var uid = "{{uid}}";
+    var graphite_key = "{{graphite_key}}";
+    var composer_url = "{{composer_url}}";
+</script>
+<script type="text/javascript" src="{% cdnurl_shortterm 'js/v2/app/tagged_metric_search.js' %}"></script>
+
+ {% endblock additionalscripts %}
