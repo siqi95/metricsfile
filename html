@@ -1,0 +1,54 @@
+{% load cloudfront_tag %}
+{% load cdnurl_longterm %}
+{% load cdnurl_shortterm %}
+{% load teamsharing_tag %}
+<section class="card-L card toggleVisibility">
+  <header class="card--header">
+    <h2 class="card--title">Tagged Metrics Search <img class="mlm vam spinner dn" src="{% cdnurl_longterm 'img/spinner.gif' %}"/> </h2>
+    <div class="inline card--controls toggleVisibility--target">
+      <span class="card--icon card-hint-trigger" data-icon="&#xe623;" aria-hidden="true">
+        <div class="card--icon-hint">
+          This panel allows you to search for specific tagged metrics used in your account and examine them.
+        </div>
+      </span>
+    </div>
+  </header>
+  <head>
+   <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+  </head>
+  <div class="card--content">
+      <p class="lowLight fs-M">&nbsp</p>
+         {% if is_error = True %}
+            <p class="lowLight fs-M">Lookup for tags failed, please try again later or if the problem persists, please contact support.</p>
+         {% elif listlength = 0 %}
+            <p class="lowLight fs-M">You currently have no tagged metrics. See the <a href="https://www.hostedgraphite.com/docs/graphite_tags/graphite_tags.html?highlight=metrics#sending-tagged-metrics" target="_blank">documentation</a> to learn how to send some!</p>
+         {% else %}
+      <p class="lowLight fs-M">To find metrics, choose and click on the tag names below.</p><br>
+         <div class="tagnames">
+             {% for tagname in tagnameA %}
+                  <button type="button" class="host" name="1" value={{forloop.counter}} onclick="AddToSearch(this)">{{tagname}}</button>
+             {% endfor %}
+
+          </div>
+      <p class="lowLight fs-M" id="holder1" style="margin-top:5%">Your search will be constructed here.</p><br>
+       <p class="lowLight fs-M">&nbsp</p>
+      <p class="lowLight fs-M" id="holder2">Results will appear here.</p><br>
+         <div id="searchbox">
+             <p class="lowLight fs-M" style="margin-bottom:2%; margin-right:15%; margin-top:8px">Enter tag values below then click Search.</p>
+             <div id="box">
+               <table id="lieb"></table>
+             </div>
+    </div>
+    <button style="position:relative; left:350px; bottom:15px" type="button" class="btn     btn-positive quickviewbutton btn-S" id="searchbutton" onclick="SendFindSeriesRequest()">Search</button>
+    <div class="inline mtl" style="position: relative; margin-top: -4px">
+        <p class="metricFilterResults lowLight fs-A mbm"></p>
+        </div>
+        <ul id="my-output" class="liveButtonToggle paddedlist cardlist list-separators list-Sm listCaps ptl"></ul>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+          <p class="lowLight fs-M">&nbsp</p>
+       {% endif %}
+  </div>
+
+ </section>           
