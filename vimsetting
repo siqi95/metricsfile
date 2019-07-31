@@ -1,0 +1,67 @@
+```" Enable filetype plugins
+filetype on
+filetype plugin indent on
+" comment magic
+set formatoptions=qrn1
+" latex stuff
+"let g:tex_flavor='latex'
+" indentation for tex files
+"au FileType tex set sw=2
+"Spell check
+au FileType tex setlocal spell spelllang=en_gb
+" Vim-latex rules:
+" to enable \ll to run automatically for pdfs
+"let g:Tex_DefaultTargetFormat='pdf'
+"let g:Tex_MultipleCompileFormats='dvi,pdf'
+
+" pretty colours
+colorscheme desert
+syntax enable
+"set background=light
+if has('gui_running')
+    set background=light
+    colorscheme solarized
+else
+    set background=dark
+    colorscheme desert
+endif
+"colorscheme solarized
+
+" don't leave home without these
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
+set expandtab
+set number
+
+"set backspace=indent,eol,start
+set guioptions-=T
+set guioptions-=r
+
+" highlight the window past 80 characters
+"let &colorcolumn=join(range(81,999),",")
+
+" folding, because I miss it when it's gone
+set foldmethod=indent```
+```# aliases
+alias ll='ls -lh'
+alias lsd='ls -d */'
+alias lrt='ls -lrth'
+alias cls='clear'
+alias grep='grep -nr --color'
+
+# prompt customization
+# mac
+#export PS1='\e[0,32m\d | \t\n\u@\h:\w/ $\e[m '
+# more ecumenical syntax (green)
+export PS1='\[\033[0;32m\]\d | \A\n\u@\h:\w/ $\[\033[0m\] '
+# home (purple)
+#export PS1='\e[38;5;99m\d | \t\n\u@\h:\w/ $\e[m '
+
+
+# colours
+export CLICOLOR=1
+export LSCOLORS=GxFxCxDxBxegedabagaced
+
+# grep colours
+export GREP_OPTIONS='--color=auto'```
